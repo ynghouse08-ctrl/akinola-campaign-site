@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
@@ -20,7 +20,6 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
-    // Look up which account this matric/JAMB number belongs to.
     const { data: email, error: lookupError } = await supabase.rpc(
       "email_for_username",
       { p_username: username.trim() }
@@ -41,7 +40,6 @@ export default function LoginPage() {
       return;
     }
 
-    // Check role and route accordingly.
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
@@ -133,5 +131,13 @@ export default function LoginPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }
