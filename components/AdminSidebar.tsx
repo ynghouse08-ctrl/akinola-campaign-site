@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/students", label: "Students" },
   { href: "/admin/transport", label: "Transport Prices" },
+  { href: "/admin/suggestions", label: "Suggestions" },
 ];
 
 export default function AdminSidebar({
@@ -21,7 +22,7 @@ export default function AdminSidebar({
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    router.push("/");
+    router.push("/login");
     router.refresh();
   }
 
