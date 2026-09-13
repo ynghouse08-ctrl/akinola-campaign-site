@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const LINKS = [
   { href: "/dashboard", label: "Overview" },
+  { href: "/dashboard/campaign", label: "Campaign" },
   { href: "/dashboard/gpa", label: "GPA / CGPA" },
   { href: "/dashboard/transport", label: "Transport Prices" },
   { href: "/dashboard/profile", label: "Profile" },
@@ -24,7 +25,7 @@ export default function Sidebar({
 
   async function handleLogout() {
     await supabase.auth.signOut();
-    router.push("/");
+    router.push("/login");
     router.refresh();
   }
 
