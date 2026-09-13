@@ -172,7 +172,7 @@ export default function RegisterPage() {
                 value={form.department}
                 onChange={(e) => update("department", e.target.value)}
                 className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-forest"
-                placeholder="e.g. Civil Engineering"
+                placeholder="e.g. Computer Engineering"
               />
             </div>
           </div>
