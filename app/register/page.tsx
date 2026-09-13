@@ -102,13 +102,12 @@ export default function RegisterPage() {
 
           <div>
             <label className="text-xs font-medium text-ink/70">Email</label>
-            <input
+                       <input
               required
               type="email"
+              autoComplete="email"
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
-              className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-forest"
-              placeholder="you@example.com"
             />
           </div>
 
@@ -194,9 +193,10 @@ export default function RegisterPage() {
               <label className="text-xs font-medium text-ink/70">
                 Password
               </label>
-              <input
+                           <input
                 required
                 type="password"
+                autoComplete="new-password"
                 value={form.password}
                 onChange={(e) => update("password", e.target.value)}
                 className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-forest"
@@ -207,9 +207,10 @@ export default function RegisterPage() {
               <label className="text-xs font-medium text-ink/70">
                 Confirm password
               </label>
-              <input
+                           <input
                 required
                 type="password"
+                autoComplete="new-password"
                 value={form.confirmPassword}
                 onChange={(e) => update("confirmPassword", e.target.value)}
                 className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-forest"
