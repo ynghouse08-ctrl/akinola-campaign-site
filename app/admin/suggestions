@@ -1,0 +1,51 @@
+import { createClient } from "@/lib/supabase/server";
+
+export default async function AdminSuggestionsPage() {
+  const supabase = createClient();
+
+  const { data: suggestions } = await supabase
+    .from("transport_suggestions")
+    .select("id, destination, note, created_at")
+    .order("created_at", { ascending: false });
+
+  return (
+    <div>
+      <h1 className="font-display text-3xl text-ink">
+        Transport suggestions
+      </h1>
+      <p className="mt-2 text-sm text-ink/60">
+        Destinations students have requested. Add confirmed ones on the
+        Transport Prices page.
+      </p>
+
+      <div className="mt-6 overflow-hidden rounded-lg border border-line">
+        {!suggestions || suggestions.length === 0 ? (
+          <p className="px-4 py-6 text-sm text-ink/50">No suggestions yet.</p>
+        ) : (
+          <table className="w-full text-sm">
+            <thead className="bg-paper text-left text-ink/60">
+              <tr>
+                <th className="px-4 py-2 font-medium">Destination</th>
+                <th className="px-4 py-2 font-medium">Note</th>
+                <th className="px-4 py-2 font-medium">Submitted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {suggestions.map((s) => (
+                <tr key={s.id} className="border-t border-line">
+                  <td className="px-4 py-2 font-medium text-ink">
+                    {s.destination}
+                  </td>
+                  <td className="px-4 py-2 text-ink/60">{s.note || "—"}</td>
+                  <td className="px-4 py-2 text-ink/60">
+                    {new Date(s.created_at).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+}
