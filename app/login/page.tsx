@@ -86,8 +86,9 @@ function LoginForm() {
             <label className="text-xs font-medium text-ink/70">
               JAMB reg. number or matric number
             </label>
-            <input
+                       <input
               required
+              autoComplete="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-forest"
@@ -98,9 +99,10 @@ function LoginForm() {
             <label className="text-xs font-medium text-ink/70">
               Password
             </label>
-            <input
+                       <input
               required
               type="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full rounded-md border border-line px-3 py-2 text-sm outline-none focus:border-forest"
