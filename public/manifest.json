@@ -1,0 +1,9 @@
+{
+  "name": "Akinola for Financial Secretary",
+  "short_name": "Akinola4FinSec",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F6F1",
+  "theme_color": "#12301F",
+  "icons": []
+}
