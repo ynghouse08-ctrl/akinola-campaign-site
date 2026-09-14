@@ -28,7 +28,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-paper">
+         <div className="flex min-h-screen flex-col bg-paper sm:flex-row">
       <Sidebar
         fullName={profile?.full_name ?? null}
         isAdmin={profile?.role === "admin"}
