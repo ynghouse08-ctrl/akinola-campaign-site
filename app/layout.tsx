@@ -16,12 +16,11 @@ const plex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Akinola Samuel Toluwani — EKSU SU Financial Secretary",
+  title: "EKSU Student Hub",
   description:
-    "Capacity. Integrity. Real Impact. Official campaign platform of Akinola Samuel Toluwani for EKSU Students' Union Financial Secretary — GPA/CGPA calculator, live transport prices, and more.",
+    "GPA/CGPA calculator, live transport prices, and campus info for EKSU students.",
   manifest: "/manifest.json",
 };
-
 export const viewport: Viewport = {
   themeColor: "#12301F",
 };
