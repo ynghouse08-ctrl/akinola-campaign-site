@@ -31,7 +31,7 @@ export default function AdminSidebar({
       <div>
         <div className="px-2">
           <p className="font-display text-lg text-gold">Admin</p>
-          <p className="text-xs text-paper/50">Akinola for Fin. Sec.</p>
+          <p className="text-xs text-paper/50">EKSU Student Hub</p>
         </div>
 
         <nav className="mt-8 space-y-1">
