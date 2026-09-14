@@ -60,7 +60,7 @@ function LoginForm() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <p className="text-sm tracking-wide text-forest">
-            Akinola for Financial Secretary
+                        EKSU Student Hub
           </p>
           <h1 className="mt-2 font-display text-3xl text-ink">Sign in</h1>
         </div>
