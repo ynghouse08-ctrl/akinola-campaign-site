@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { CAMPAIGN } from "@/lib/config";
+import { SITE } from "@/lib/config";
 
 export default async function DashboardOverview() {
   const supabase = createClient();
@@ -31,12 +31,9 @@ export default async function DashboardOverview() {
   return (
     <div>
       <div className="rounded-lg bg-forest px-8 py-10 text-paper">
-        <p className="text-sm text-goldsoft">{CAMPAIGN.hashtag}</p>
+        <p className="text-sm text-goldsoft">{SITE.name}</p>
         <h1 className="mt-2 font-display text-3xl">Welcome back, {firstName}</h1>
-        <p className="mt-2 max-w-xl text-sm text-paper/80">
-          {CAMPAIGN.tagline} Use the tools below, and thanks for being part
-          of the campaign.
-        </p>
+        <p className="mt-2 max-w-xl text-sm text-paper/80">{SITE.tagline}</p>
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -76,8 +73,8 @@ export default async function DashboardOverview() {
             GPA / CGPA calculator
           </h3>
           <p className="mt-2 text-sm text-ink/70">
-            Work out this semester's GPA or your cumulative CGPA, and save it
-            to your history.
+            Work out this semester&apos;s GPA or your cumulative CGPA, and
+            save it to your history.
           </p>
         </Link>
         <Link
