@@ -1,6 +1,6 @@
 {
-  "name": "Akinola for Financial Secretary",
-  "short_name": "Akinola4FinSec",
+    "name": "EKSU Student Hub",
+  "short_name": "EKSU Hub",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#F5F6F1",
