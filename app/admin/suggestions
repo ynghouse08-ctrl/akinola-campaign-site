@@ -1,51 +1,149 @@
-import { createClient } from "@/lib/supabase/server";
+"use client";
 
-export default async function AdminSuggestionsPage() {
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+type Suggestion = {
+  id: string;
+  destination: string;
+  note: string | null;
+  status: string;
+  created_at: string;
+};
+
+export default function AdminSuggestionsPage() {
   const supabase = createClient();
+  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [priceDrafts, setPriceDrafts] = useState<Record<string, string>>({});
 
-  const { data: suggestions } = await supabase
-    .from("transport_suggestions")
-    .select("id, destination, note, created_at")
-    .order("created_at", { ascending: false });
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function load() {
+    setLoading(true);
+    const { data } = await supabase
+      .from("transport_suggestions")
+      .select("id, destination, note, status, created_at")
+      .order("created_at", { ascending: false });
+    setSuggestions(data ?? []);
+    setLoading(false);
+  }
+
+  async function approve(s: Suggestion) {
+    const price = Number(priceDrafts[s.id]);
+    if (!price || price <= 0) return;
+
+    setBusyId(s.id);
+    const { error: insertError } = await supabase
+      .from("transport_routes")
+      .insert({ destination: s.destination, price });
+
+    if (!insertError) {
+      await supabase
+        .from("transport_suggestions")
+        .update({ status: "approved", reviewed_at: new Date().toISOString() })
+        .eq("id", s.id);
+    }
+    setBusyId(null);
+    load();
+  }
+
+  async function reject(s: Suggestion) {
+    setBusyId(s.id);
+    await supabase
+      .from("transport_suggestions")
+      .update({ status: "rejected", reviewed_at: new Date().toISOString() })
+      .eq("id", s.id);
+    setBusyId(null);
+    load();
+  }
+
+  const pending = suggestions.filter((s) => s.status === "pending");
+  const reviewed = suggestions.filter((s) => s.status !== "pending");
 
   return (
-    <div>
+    <div className="max-w-3xl">
       <h1 className="font-display text-3xl text-ink">
         Transport suggestions
       </h1>
       <p className="mt-2 text-sm text-ink/60">
-        Destinations students have requested. Add confirmed ones on the
-        Transport Prices page.
+        Review destinations students have requested. Approving adds it
+        straight to the live transport list.
       </p>
 
-      <div className="mt-6 overflow-hidden rounded-lg border border-line">
-        {!suggestions || suggestions.length === 0 ? (
-          <p className="px-4 py-6 text-sm text-ink/50">No suggestions yet.</p>
+      <h2 className="mt-6 font-display text-lg text-forest">
+        Pending ({pending.length})
+      </h2>
+      <div className="mt-3 space-y-3">
+        {loading ? (
+          <p className="text-sm text-ink/50">Loading…</p>
+        ) : pending.length === 0 ? (
+          <p className="text-sm text-ink/50">Nothing pending.</p>
         ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-paper text-left text-ink/60">
-              <tr>
-                <th className="px-4 py-2 font-medium">Destination</th>
-                <th className="px-4 py-2 font-medium">Note</th>
-                <th className="px-4 py-2 font-medium">Submitted</th>
-              </tr>
-            </thead>
-            <tbody>
-              {suggestions.map((s) => (
-                <tr key={s.id} className="border-t border-line">
-                  <td className="px-4 py-2 font-medium text-ink">
-                    {s.destination}
-                  </td>
-                  <td className="px-4 py-2 text-ink/60">{s.note || "—"}</td>
-                  <td className="px-4 py-2 text-ink/60">
-                    {new Date(s.created_at).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          pending.map((s) => (
+            <div
+              key={s.id}
+              className="rounded-lg border border-line bg-panel p-4"
+            >
+              <p className="font-medium text-ink">{s.destination}</p>
+              {s.note && <p className="mt-1 text-sm text-ink/60">{s.note}</p>}
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <input
+                  type="number"
+                  placeholder="Price (₦)"
+                  value={priceDrafts[s.id] ?? ""}
+                  onChange={(e) =>
+                    setPriceDrafts((d) => ({ ...d, [s.id]: e.target.value }))
+                  }
+                  className="w-32 rounded-md border border-line px-3 py-1.5 text-sm outline-none focus:border-forest"
+                />
+                <button
+                  disabled={busyId === s.id}
+                  onClick={() => approve(s)}
+                  className="rounded-md bg-forest px-4 py-1.5 text-sm font-medium text-paper hover:bg-ink disabled:opacity-50"
+                >
+                  Approve & add
+                </button>
+                <button
+                  disabled={busyId === s.id}
+                  onClick={() => reject(s)}
+                  className="rounded-md border border-red-200 px-4 py-1.5 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          ))
         )}
       </div>
+
+      {reviewed.length > 0 && (
+        <>
+          <h2 className="mt-8 font-display text-lg text-ink">Reviewed</h2>
+          <div className="mt-3 overflow-hidden rounded-lg border border-line">
+            <table className="w-full text-sm">
+              <thead className="bg-paper text-left text-ink/60">
+                <tr>
+                  <th className="px-4 py-2 font-medium">Destination</th>
+                  <th className="px-4 py-2 font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reviewed.map((s) => (
+                  <tr key={s.id} className="border-t border-line">
+                    <td className="px-4 py-2">{s.destination}</td>
+                    <td className="px-4 py-2 capitalize">{s.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }
