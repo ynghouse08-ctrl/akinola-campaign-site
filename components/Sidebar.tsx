@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const LINKS = [
   { href: "/dashboard", label: "Overview" },
-  { href: "/dashboard/campaign", label: "Campaign" },
+  { href: "/dashboard/aspirants", label: "Know Your Aspirants" },
   { href: "/dashboard/gpa", label: "GPA / CGPA" },
   { href: "/dashboard/transport", label: "Transport Prices" },
   { href: "/dashboard/profile", label: "Profile" },
@@ -33,9 +33,8 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Mobile top bar */}
       <div className="flex items-center justify-between border-b border-line bg-panel px-4 py-3 sm:hidden">
-        <p className="font-display text-lg text-forest">Akinola</p>
+        <p className="font-display text-lg text-forest">EKSU Hub</p>
         <button
           onClick={() => setOpen(!open)}
           className="rounded-md border border-line px-3 py-1.5 text-sm"
@@ -51,8 +50,8 @@ export default function Sidebar({
       >
         <div>
           <div className="hidden px-2 sm:block">
-            <p className="font-display text-lg text-forest">Akinola</p>
-            <p className="text-xs text-ink/50">for Financial Secretary</p>
+            <p className="font-display text-lg text-forest">EKSU</p>
+            <p className="text-xs text-ink/50">Student Hub</p>
           </div>
 
           <nav className="mt-4 space-y-1 sm:mt-8">
