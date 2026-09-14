@@ -73,7 +73,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-lg">
         <div className="mb-8 text-center">
           <p className="text-sm tracking-wide text-forest">
-            Akinola for Financial Secretary
+                        EKSU Student Hub
           </p>
           <h1 className="mt-2 font-display text-3xl text-ink">
             Create your account
